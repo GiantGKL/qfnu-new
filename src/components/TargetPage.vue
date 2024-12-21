@@ -1,122 +1,27 @@
 <template>
-  <a-form
-    ref="formRef"
-    name="dynamic_form_item"
-    :model="dynamicValidateForm"
-    v-bind="formItemLayoutWithOutLabel"
+  <a-button type="primary" @click="showDrawer">Open</a-button>
+  <a-drawer
+    v-model:open="open"
+    class="custom-class"
+    root-class-name="root-class-name"
+    :root-style="{ color: 'blue' }"
+    style="color: red"
+    title="Basic Drawer"
+    placement="right"
+    @after-open-change="afterOpenChange"
   >
-    <a-form-item
-      v-for="(domain, index) in dynamicValidateForm.domains"
-      :key="domain.key"
-      v-bind="index === 0 ? formItemLayout : {}"
-      :label="index === 0 ? '目标' : ''"
-      :name="['domains', index, 'value']"
-      :rules="{
-        required: true,
-        message: '不能为空',
-        trigger: 'change',
-      }"
-    >
-      <a-input
-        v-model:value="domain.value"
-        placeholder="填写目标"
-        style="width: 60%; margin-right: 8px"
-      />
-      <MinusCircleOutlined
-        v-if="dynamicValidateForm.domains.length > 1"
-        class="dynamic-delete-button"
-        @click="removeDomain(domain)"
-      />
-    </a-form-item>
-    <a-form-item v-bind="formItemLayoutWithOutLabel">
-      <a-button type="dashed" style="width: 60%" @click="addDomain">
-        <PlusOutlined />
-        添加目标
-      </a-button>
-    </a-form-item>
-    <a-form-item v-bind="formItemLayoutWithOutLabel">
-      <a-button type="primary" html-type="submit" @click="submitForm">提交</a-button>
-      <a-button style="margin-left: 10px" @click="resetForm">重置</a-button>
-    </a-form-item>
-  </a-form>
+    <p>Some contents...</p>
+    <p>Some contents...</p>
+    <p>Some contents...</p>
+  </a-drawer>
 </template>
 <script setup>
-import { reactive, ref } from 'vue';
-const formRef = ref();
-const formItemLayout = {
-  labelCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 4,
-    },
-  },
-  wrapperCol: {
-    xs: {
-      span: 24,
-    },
-    sm: {
-      span: 20,
-    },
-  },
+import { ref } from 'vue';
+const open = ref(false);
+const afterOpenChange = bool => {
+  console.log('open', bool);
 };
-const formItemLayoutWithOutLabel = {
-  wrapperCol: {
-    xs: {
-      span: 24,
-      offset: 0,
-    },
-    sm: {
-      span: 20,
-      offset: 4,
-    },
-  },
-};
-const dynamicValidateForm = reactive({
-  domains: [],
-});
-const submitForm = () => {
-  formRef.value
-    .validate()
-    .then(() => {
-      console.log('values', dynamicValidateForm.domains);
-    })
-    .catch(error => {
-      console.log('error', error);
-    });
-};
-const resetForm = () => {
-  formRef.value.resetFields();
-  dynamicValidateForm.domains = [];
-};
-const removeDomain = item => {
-  const index = dynamicValidateForm.domains.indexOf(item);
-  if (index !== -1) {
-    dynamicValidateForm.domains.splice(index, 1);
-  }
-};
-const addDomain = () => {
-  dynamicValidateForm.domains.push({
-    value: '',
-    key: Date.now(),
-  });
+const showDrawer = () => {
+  open.value = true;
 };
 </script>
-<style scoped>
-.dynamic-delete-button {
-  cursor: pointer;
-  position: relative;
-  top: 4px;
-  font-size: 24px;
-  color: #999;
-  transition: all 0.3s;
-}
-.dynamic-delete-button:hover {
-  color: #777;
-}
-.dynamic-delete-button[disabled] {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-</style>
