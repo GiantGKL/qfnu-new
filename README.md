@@ -44,9 +44,9 @@
 ## 使用说明
 - 运行项目：
   ```bash
-  npm run serve
+  npm run dev
   ```
-- 在浏览器中打开 `http://localhost:8080` 查看项目。
+- 在浏览器中打开 `http://localhost:5173` 查看项目。
 
 ## 贡献
 如果你想为这个项目做出贡献，请遵循以下步骤：
