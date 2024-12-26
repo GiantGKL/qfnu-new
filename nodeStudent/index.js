@@ -42,6 +42,17 @@ app.get('/api/notice', (req, res) => {
   });
 });
 
+app.get('/api/plan', (req, res) => {
+  const query = 'SELECT * FROM plan';
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error('数据库查询失败:', err.stack);
+      return res.status(500).json({ error: '数据库查询失败' });
+    }
+    res.json(results);
+  });
+});
+
 app.listen(port, () => {
   console.log(`服务器正在运行，监听端口 ${port}`);
 });

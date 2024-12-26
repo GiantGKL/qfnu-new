@@ -1,15 +1,15 @@
 <template>
   <a-flex>
-    <a-card title="个人资料" hoverable style="width: 50vw">
+    <a-card title="个人资料" hoverable style="width: 50%">
       <p>姓名：{{ student.name }}</p>
       <p>学号：{{ student.studentID }}</p>
     </a-card>
-    <a-card title="目标待办" hoverable style="width: 50vw">
+    <a-card title="目标待办" hoverable style="width: 50%">
     </a-card>
   </a-flex>
   <a-flex>
-    <a-card title="通知公告" hoverable style="width: 100vw;height: 32vw">
-      <div style="width: 80vw;height: 25vw;">
+    <a-card title="通知公告" hoverable style="width: 100%;height: 32vw">
+      <div style="width: 100%;height: 25vw;">
         <a-card 
           v-for="i in notices" 
           :key="i.id" 
