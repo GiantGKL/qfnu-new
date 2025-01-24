@@ -86,6 +86,7 @@ export default {
       }catch(e){
         console.log(e);
       }
+      this.fetchPlans();
     },
     afterOpenChange(bool) {
       console.log('open', bool);
