@@ -20,36 +20,35 @@ connection.connect((err) => {
   console.log('成功连接到数据库');
 });
 
-app.get('/api/student', (req, res) => {
-  const query = 'SELECT * FROM student';
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error('数据库查询失败:', err.stack);
-      return res.status(500).json({ error: '数据库查询失败' });
-    }
-    res.json(results);
+function createGetEndpoint(path, name) {
+  app.get(path, (req, res) => {
+    const query = `SELECT * FROM ${name}`;
+    connection.query(query, (err, results) => {
+      if (err) {
+        console.error('数据库查询失败:', err.stack);
+        return res.status(500).json({ error: '数据库查询失败' });
+      }
+      console.log(`已查询到${name}`);
+      res.json(results);
+    });
   });
-});
+}
 
-app.get('/api/notice', (req, res) => {
-  const query = 'SELECT * FROM notice';
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error('数据库查询失败:', err.stack);
-      return res.status(500).json({ error: '数据库查询失败' });
-    }
-    res.json(results);
-  });
-});
+createGetEndpoint('/api/student', 'student');
+createGetEndpoint('/api/notice', 'notice');
+createGetEndpoint('/api/plan', 'plan');
+createGetEndpoint('/api/subplan', 'subplan');
 
-app.get('/api/plan', (req, res) => {
-  const query = 'SELECT * FROM plan';
-  connection.query(query, (err, results) => {
+app.post('/api/addSubplan', (req, res) => {
+  const { content, completion = false, planID } = req.body; // 从前端接收数据
+
+  const sql = 'INSERT INTO subplan (content, completion, planID) VALUES (?, ?, ?)';
+  db.query(sql, [content, completion, planID], (err, result) => {
     if (err) {
-      console.error('数据库查询失败:', err.stack);
-      return res.status(500).json({ error: '数据库查询失败' });
+      console.error('插入数据失败:', err);
+      return res.status(500).send({ error: '插入数据失败', details: err });
     }
-    res.json(results);
+    res.status(200).send({ message: '数据插入成功', result });
   });
 });
 
