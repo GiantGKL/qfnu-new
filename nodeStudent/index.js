@@ -3,7 +3,9 @@ const mysql = require('mysql');
 const cors = require('cors');
 const app = express();
 const port = 3000;
+const bodyParser = require('body-parser');
 app.use(cors());
+app.use(bodyParser.json());
 
 const connection = mysql.createConnection({
   host: 'localhost',
@@ -43,7 +45,7 @@ app.post('/api/addSubplan', (req, res) => {
   const { content, completion = false, planID } = req.body; // 从前端接收数据
 
   const sql = 'INSERT INTO subplan (content, completion, planID) VALUES (?, ?, ?)';
-  db.query(sql, [content, completion, planID], (err, result) => {
+  connection.query(sql, [content, completion, planID], (err, result) => {
     if (err) {
       console.error('插入数据失败:', err);
       return res.status(500).send({ error: '插入数据失败', details: err });

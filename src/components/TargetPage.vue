@@ -76,11 +76,16 @@ export default {
       console.log(this.plans[0]);
     },
     async addSubplan(ID,con,com) {
+      console.log(con);
       this.formData.planID = ID;
       this.formData.content = con;
       this.formData.completion = com;
-      const response = await axios.post('http://localhost:3000/api/addsubplan', this.formData);
-      console.log(JSON.stringify(response.data));
+      try{
+        const response = await axios.post('http://localhost:3000/api/addsubplan', this.formData);
+        console.log('提交成功');
+      }catch(e){
+        console.log(e);
+      }
     },
     afterOpenChange(bool) {
       console.log('open', bool);
