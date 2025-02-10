@@ -28,7 +28,7 @@
         >
           <p>目标名称：{{ i.title }}</p>
           <p>内容：{{ i.content }}</p>
-          <a-textarea v-model:value="value" placeholder="目标内容" :rows="4" />
+          <a-textarea v-model:value="i.value" placeholder="目标内容" :rows="4" />
           <!-- <a-date-picker v-model="dateTime" show-time placeholder="预计截止时间" />  -->
           <a-button type="primary" @click="addSubplan(i.planID,value,0)">添加</a-button>
           <a-card hoverable v-for="j in subplans">
@@ -37,7 +37,7 @@
               <a-tag v-else color="red">未完成</a-tag>
               {{ j.content }}
             </a-card>
-            <a-button v-if="i.planID == j.planID" style="display:inline-block; vertical-align: middle;" danger>删除</a-button>
+            <a-button @click="deleteSubplan(j.subplanID)" v-if="i.planID == j.planID" style="display:inline-block; vertical-align: middle;" danger>删除</a-button>
           </a-card>
         </a-drawer>
       </a-space>
@@ -80,13 +80,19 @@ export default {
       this.formData.planID = ID;
       this.formData.content = con;
       this.formData.completion = com;
-      try{
+      try {
         const response = await axios.post('http://localhost:3000/api/addsubplan', this.formData);
-        console.log('提交成功');
-      }catch(e){
+      }catch(e) {
         console.log(e);
       }
-      this.fetchPlans();
+      await this.fetchPlans();
+    },
+    async deleteSubplan(ID) {
+      try {
+        const response = await axios.post(`http://localhost:3000/api/deletesubplan/${ID}`);
+      }catch(e) {
+        console.log(e);
+      }
     },
     afterOpenChange(bool) {
       console.log('open', bool);

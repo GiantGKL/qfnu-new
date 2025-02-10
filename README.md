@@ -44,7 +44,7 @@
 ## 使用说明
 - 运行项目：
   ```bash
-  npm run dev
+  npm start
   ```
 - 在浏览器中打开 `http://localhost:5173` 查看项目。
 
