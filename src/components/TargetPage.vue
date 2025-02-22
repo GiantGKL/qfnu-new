@@ -89,7 +89,8 @@ export default {
     },
     async deleteSubplan(ID) {
       try {
-        const response = await axios.post(`http://localhost:3000/api/deletesubplan/${ID}`);
+        const response = await axios.delete(`http://localhost:3000/api/subplan/${ID}`);
+        await this.fetchPlans();
       }catch(e) {
         console.log(e);
       }

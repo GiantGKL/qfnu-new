@@ -54,6 +54,22 @@ app.post('/api/addSubplan', (req, res) => {
   });
 });
 
+app.delete('/api/subplan/:id', (req, res) => {
+  const subplanId = req.params.id;
+  const sql = 'DELETE FROM subplan WHERE subplanID = ?';
+  
+  connection.query(sql, [subplanId], (err, result) => {
+    if (err) {
+      console.error('删除数据失败:', err);
+      return res.status(500).send({ error: '删除数据失败' });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).send({ error: '未找到对应子计划' });
+    }
+    res.status(200).send({ message: '删除成功' });
+  });
+});
+
 app.listen(port, () => {
   console.log(`服务器正在运行，监听端口 ${port}`);
 });
